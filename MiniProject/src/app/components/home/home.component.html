@@ -1,9 +1,39 @@
 <!-- Main navigation header for the application -->
-<app-header></app-header>
+<app-header (sideNavToggle)="toggleSidenav()"></app-header>
 
-<!-- Main content area of the home page -->
-<main class="home-content">
-    <!-- Placeholder text - replace with actual home content -->
-    <p>home works!</p>
-    <p>Helloooo class</p>
-</main>
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
+        <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+    </mat-sidenav>
+
+    <!-- Main content area of the home page -->
+    <mat-sidenav-content>
+        <main class="home-content">
+            <div class="board-container">
+                <!-- Backlog Column -->
+                <div class="board-column">
+                    <h2>Backlog</h2>
+                    <div class="tasks-container">
+                        <!-- Tasks will be added here -->
+                    </div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="board-column">
+                    <h2>In progress</h2>
+                    <div class="tasks-container">
+                        <p class="empty-text">Empty list</p>
+                    </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="board-column">
+                    <h2>Done</h2>
+                    <div class="tasks-container">
+                        <p class="empty-text">Empty list</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container> 
