@@ -31,7 +31,7 @@ export class LogInComponent {
 
   async login() {
     try {
-      const auth = getAuth();
+      const auth = getAuth(firebaseApp);
       const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
       console.log("User logged in:", userCredential.user);
       
