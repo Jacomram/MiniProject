@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { firebaseApp } from '../../../main';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,10 +30,9 @@ export class SideNavListComponent implements OnInit {
     constructor(private router: Router) {} 
 
     ngOnInit(): void {
-        const auth = getAuth();
+        const auth = getAuth(firebaseApp);
         const expTime = 30 * 60 * 1000; // 30 minutes in milliseconds
         onAuthStateChanged(auth, (user) => {
-            console.log(this.isLoggedIn);
             if (user) {
               // Check if session is expired
               let loginTimeStr: string | null = localStorage.getItem("loginTime");
@@ -63,7 +63,7 @@ export class SideNavListComponent implements OnInit {
     async logout() {
         try {
             if(this.isLoggedIn) {
-                const auth = getAuth();
+                const auth = getAuth(firebaseApp);
                 await signOut(auth);
                 localStorage.removeItem("loginTime"); // Clear login time
                 this.isLoggedIn = false;
