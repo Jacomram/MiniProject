@@ -1,1 +1,27 @@
-<p>log-in works!</p>
+<body>
+    <section id="container">
+        <header>
+            <div>
+                <label>Tasks Management</label>
+            </div>
+        </header>
+        <form id="login">
+            <div class="input-normal">
+                <input id="txt_email" type="text" name="Email" placeholder="Email" [(ngModel)]="email">
+                <i class="fa fa-id-badge" aria-hidden="true"></i>
+            </div>
+            <div class="input-normal">
+                <input id="txt_password" [type]="isPasswordVisible ? 'text' : 'password'" name="Password" placeholder="Password" [(ngModel)]="password">
+                <i class="fa fa-lock pswImg" aria-hidden="true"></i>
+                <i class="fa pswEyes || {{ isPasswordVisible ? 'fa-eye' : 'fa-eye-slash' }}" (click)="pswEyes()">
+                </i>
+            </div>
+            <div class="login">
+                <input type="button" value="Log in" (click)="login()">
+            </div>
+            <div class="register">
+                <button routerLink="/register">Register</button>
+            </div>
+        </form>
+    </section>
+</body>
