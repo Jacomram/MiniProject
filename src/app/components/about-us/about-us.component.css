@@ -1,0 +1,62 @@
+#text{
+    font-size: 20px;
+    color: #000;
+    font-weight: 200;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: center;
+}
+
+#names {
+    list-style: none;
+    font-size: 20px;
+    color: #000;
+    font-weight: 500;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#names li {
+    list-style: none;
+    display: inline;
+    margin-right: 40px;
+}
+
+#groupimg img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+#emails{
+    list-style: none;
+    text-align: center;
+   
+}
+
+#emails li{
+    list-style: none;
+    display: inline;
+    font-size: 15px;
+    color: #000;
+    font-weight: 100;
+    margin-top: 80px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+h3 {
+    font-size: 20px;
+    color: #e71352;
+    font-weight: 500;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    text-align: center;
+}

@@ -1,1 +1,43 @@
-<p>about-us works!</p>
+<!-- Main navigation header for the application -->
+<app-header (sideNavToggle)="toggleSidenav()"></app-header>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
+        <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+    </mat-sidenav>
+
+<div>
+    <div id="text">
+        <p>We are Team One, composed of Hebe ChihYun Hsu, Hotaka Iwata, Donovan Mendez, Jacobo Ramirez, and Maria Castro. Together, we have the mission of creating a functional website with the help of Angular and Firebase.</p>
+        <br>
+        <p>If you enjoyed this website feel free to contact us</p>
+    </div>
+
+    <div id="groupimg">
+        <img src="assets\imgteamone.jpeg">
+    </div>
+
+    <div id="names">
+    <ul>
+        <li>ChihYun Hsu</li>
+        <li>Hotaka Iwata</li>
+        <li>Jacobo Ramirez</li>
+        <li>Donovan Jimenez</li>
+        <li>Maria Castro</li>
+    </ul>
+    </div>
+
+    <h3>Contact Information</h3>
+
+    <div id="emails">
+        <ul>
+            <li>a7264669&#64;gmail.com</li>
+            <li>hotakaiwata129&#64;gmail.com</li>
+            <li>jacobojoseramirezarujo&#64;gmail.com</li>
+            <li>cris.jdonovan&#64;gmail.com</li>
+            <li>mvcastrotrujillo&#64;gmail.com</li>
+        </ul>
+        </div>
+
+</div>
+
