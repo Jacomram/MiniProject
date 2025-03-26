@@ -1,5 +1,5 @@
 <form (submit)="addTask()">
-  <input type="text"  name="task" placeholder="Add Task">
-    <input type="text" name="description" placeholder="Add Description">
+  <input type="text" [(ngModel)]="taskTitle" name="taskTitle" placeholder="Add Task">
+  <input type="text" [(ngModel)]="taskDescription" name="taskDescription" placeholder="Add Description">
   <button type="submit">Add Task</button>
 </form>
