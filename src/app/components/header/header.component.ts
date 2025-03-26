@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { firebaseApp } from '../../../main';
-import { exit } from 'process';
 
 @Component({
     selector: 'app-header',

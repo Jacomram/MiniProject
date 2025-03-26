@@ -5,9 +5,10 @@
     <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
         <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
     </mat-sidenav>
-
+    
     <!-- Main content area of the home page -->
     <mat-sidenav-content>
+        <app-tasks class="home-content"></app-tasks>
         <main class="home-content">
             <div class="board-container">
                 <!-- Backlog Column -->
