@@ -24,13 +24,6 @@
     }
 }
 
-.tasks-container {
-    min-height: 100px;
-    background-color: white;
-    border-radius: 4px;
-    padding: 8px;
-}
-
 .empty-text {
     color: #888;
     text-align: center;

@@ -1,1 +1,5 @@
-<p>tasks works!</p>
+<form (submit)="addTask()">
+  <input type="text" [(ngModel)]="taskTitle" name="taskTitle" placeholder="Add Task">
+  <input type="text" [(ngModel)]="taskDescription" name="taskDescription" placeholder="Add Description">
+  <button type="submit">Add Task</button>
+</form>
