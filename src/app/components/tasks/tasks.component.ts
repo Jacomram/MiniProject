@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { firebaseApp } from '../../../main';
-import { get } from 'http';
 
 @Component({
   selector: 'app-tasks',
@@ -13,10 +12,30 @@ import { get } from 'http';
   styleUrl: './tasks.component.css'
 })
 export class TasksComponent {
-addTask() {
-  // Add a task to the database
-  const db = getFirestore(firebaseApp);
-  const tasksCollection = collection(db, 'tasks');
+  taskTitle: string = '';
+  taskDescription: string = '';
 
-}
+  async addTask() {
+    try {
+      const db = getFirestore(firebaseApp);
+      const tasksCollection = collection(db, 'tasks');
+      
+      const taskData = {
+        title: this.taskTitle,
+        description: this.taskDescription,
+        createdAt: new Date(),
+        completed: false
+      };
+
+      await addDoc(tasksCollection, taskData);
+      
+      // Clear fields after adding the task
+      this.taskTitle = '';
+      this.taskDescription = '';
+      
+      console.log('Task added successfully');
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
+  }
 }
