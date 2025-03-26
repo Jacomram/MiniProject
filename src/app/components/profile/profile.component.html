@@ -1,0 +1,60 @@
+<app-header (sideNavToggle)="toggleSideNav()"></app-header>
+
+<div class="profile-container">
+  <app-side-nav *ngIf="isSideNavOpen"></app-side-nav>
+
+  <main class="profile-content">
+    <h1>Profile</h1>
+
+    <div *ngIf="user" class="profile-card">
+      <!-- User information area -->
+      <div class="user-info">
+        <h2>Basic Information</h2>
+        <div class="info-row">
+          <span class="label">User Name:</span>
+          <span class="value">{{ username || 'Not set' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">E-mail address:</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+      </div>
+
+      <!-- Password renewal area -->
+      <div class="password-section">
+        <h2>Wanna change your password?</h2>
+        <button (click)="showPasswordForm = true" *ngIf="!showPasswordForm">
+          RENEW PASSWORD
+        </button>
+
+        <form *ngIf="showPasswordForm" (ngSubmit)="handlePasswordUpdate()">
+          <div class="form-group">
+            <label for="newPassword">New password</label>
+            <input 
+              type="password" 
+              id="newPassword" 
+              [(ngModel)]="newPassword" 
+              name="newPassword"
+              required
+              minlength="6"
+            >
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm password</label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              [(ngModel)]="confirmPassword" 
+              name="confirmPassword"
+              required
+            >
+          </div>
+          <div class="button-group">
+            <button type="submit" [disabled]="!passwordFormValid()">RENEW</button>
+            <button type="button" (click)="cancelPasswordChange()">CANCEL</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
