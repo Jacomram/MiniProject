@@ -16,7 +16,7 @@
         <a matline class="nav-item">Profile</a>
     </mat-list-item>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="onSidenavClose()">Profile</button>
+        <button mat-menu-item routerLink="/profile" (click)="onSidenavClose()">Profile</button>
         <button mat-menu-item (click)="onSidenavClose()">Contacts</button>
         <button mat-menu-item *ngIf="isLoggedIn" (click)="logout()">Logout</button>
     </mat-menu>
