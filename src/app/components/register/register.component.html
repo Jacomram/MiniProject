@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <section id="register-container">
   <h2>Register</h2>
   <form (ngSubmit)="register()">
@@ -31,7 +32,7 @@
         placeholder="Password" 
         required
       >
-      <i class="fa fa-lock pswImg" aria-hidden="true"></i>
+      <!-- <i class="fa fa-lock pswImg" aria-hidden="true"></i> -->
       <i class="fa" 
         [ngClass]="[isPasswordVisible ? 'fa-eye' : 'fa-eye-slash']"
         (click)="togglePasswordVisibility()">
