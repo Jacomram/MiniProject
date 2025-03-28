@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { firebaseApp } from '../../../main';
+import { TaskService } from '../../services/task.service';
+import { Router } from '@angular/router';
+import { getAuth } from 'firebase/auth';
 
 @Component({
   selector: 'app-tasks',
@@ -15,19 +16,27 @@ export class TasksComponent {
   taskTitle: string = '';
   taskDescription: string = '';
 
+  constructor(
+    private taskService: TaskService,
+    private router: Router
+  ) {}
+
   async addTask() {
+    if (!this.taskTitle.trim()) return;
+
     try {
-      const db = getFirestore(firebaseApp);
-      const tasksCollection = collection(db, 'tasks');
-      
-      const taskData = {
+      const auth = getAuth();
+      if (!auth.currentUser) {
+        await this.router.navigate(['/login']);
+        return;
+      }
+
+      await this.taskService.addTask({
         title: this.taskTitle,
         description: this.taskDescription,
-        createdAt: new Date(),
-        completed: false
-      };
-
-      await addDoc(tasksCollection, taskData);
+        status: 'backlog',
+        createdAt: new Date()
+      });
       
       // Clear fields after adding the task
       this.taskTitle = '';
@@ -36,6 +45,9 @@ export class TasksComponent {
       console.log('Task added successfully');
     } catch (error) {
       console.error('Error adding task:', error);
+      if (error instanceof Error && error.message === 'No user is currently logged in') {
+        await this.router.navigate(['/login']);
+      }
     }
   }
 }

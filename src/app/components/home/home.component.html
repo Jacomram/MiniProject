@@ -14,24 +14,78 @@
                 <!-- Backlog Column -->
                 <div class="board-column">
                     <h2>Backlog</h2>
-                    <div class="tasks-container">
-                        <!-- Tasks will be added here -->
+                    <div 
+                        class="tasks-container"
+                        id="backlog"
+                        cdkDropList
+                        [cdkDropListData]="(taskService.backlogTasks$ | async) || []"
+                        [cdkDropListConnectedTo]="['in-progress', 'done']"
+                        (cdkDropListDropped)="onDrop($event)">
+                        @for (task of (taskService.backlogTasks$ | async) || []; track task.id) {
+                            <div class="task-card" cdkDrag>
+                                <div class="task-header">
+                                    <h3>{{ task.title }}</h3>
+                                    <button class="delete-btn" (click)="deleteTask(task)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <p>{{ task.description }}</p>
+                            </div>
+                        } @empty {
+                            <p class="empty-text">Empty list</p>
+                        }
                     </div>
                 </div>
 
                 <!-- In Progress Column -->
                 <div class="board-column">
                     <h2>In progress</h2>
-                    <div class="tasks-container">
-                        <p class="empty-text">Empty list</p>
+                    <div 
+                        class="tasks-container"
+                        id="in-progress"
+                        cdkDropList
+                        [cdkDropListData]="(taskService.inProgressTasks$ | async) || []"
+                        [cdkDropListConnectedTo]="['backlog', 'done']"
+                        (cdkDropListDropped)="onDrop($event)">
+                        @for (task of (taskService.inProgressTasks$ | async) || []; track task.id) {
+                            <div class="task-card" cdkDrag>
+                                <div class="task-header">
+                                    <h3>{{ task.title }}</h3>
+                                    <button class="delete-btn" (click)="deleteTask(task)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <p>{{ task.description }}</p>
+                            </div>
+                        } @empty {
+                            <p class="empty-text">Empty list</p>
+                        }
                     </div>
                 </div>
 
                 <!-- Done Column -->
                 <div class="board-column">
                     <h2>Done</h2>
-                    <div class="tasks-container">
-                        <p class="empty-text">Empty list</p>
+                    <div 
+                        class="tasks-container"
+                        id="done"
+                        cdkDropList
+                        [cdkDropListData]="(taskService.doneTasks$ | async) || []"
+                        [cdkDropListConnectedTo]="['backlog', 'in-progress']"
+                        (cdkDropListDropped)="onDrop($event)">
+                        @for (task of (taskService.doneTasks$ | async) || []; track task.id) {
+                            <div class="task-card" cdkDrag>
+                                <div class="task-header">
+                                    <h3>{{ task.title }}</h3>
+                                    <button class="delete-btn" (click)="deleteTask(task)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                <p>{{ task.description }}</p>
+                            </div>
+                        } @empty {
+                            <p class="empty-text">Empty list</p>
+                        }
                     </div>
                 </div>
             </div>
