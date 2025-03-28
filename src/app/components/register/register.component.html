@@ -1,16 +1,62 @@
-<h2>Register</h2>
-<form (ngSubmit)="register()">
-  <div>
-    <label for="name">Name:</label>
-    <input id="name" [(ngModel)]="name" name="name" required>
-  </div>
-  <div>
-    <label for="email">Email:</label>
-    <input id="email" type="email" [(ngModel)]="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input id="password" type="password" [(ngModel)]="password" name="password" required>
-  </div>
-  <button type="submit">Register</button>
-</form>
+<section id="register-container">
+  <h2>Register</h2>
+  <form (ngSubmit)="register()">
+    <div class="input-group">
+      <input 
+        id="name" 
+        [(ngModel)]="name" 
+        name="name" 
+        placeholder="Name" 
+        required
+      >
+    </div>
+
+    <div class="input-group">
+      <input 
+        id="email" 
+        type="email" 
+        [(ngModel)]="email" 
+        name="email" 
+        placeholder="Email" 
+        required
+      >
+    </div>
+
+    <div class="input-group">
+      <input 
+        id="password" 
+        [type]="isPasswordVisible ? 'text' : 'password'" 
+        [(ngModel)]="password" 
+        name="password" 
+        placeholder="Password" 
+        required
+      >
+      <i class="fa fa-lock pswImg" aria-hidden="true"></i>
+      <i class="fa" 
+        [ngClass]="[isPasswordVisible ? 'fa-eye' : 'fa-eye-slash']"
+        (click)="togglePasswordVisibility()">
+      </i>
+    </div>
+
+    <div class="input-group">
+      <input 
+        id="confirmPassword" 
+        [type]="isConfirmPasswordVisible ? 'text' : 'password'" 
+        [(ngModel)]="confirmPassword" 
+        name="confirmPassword" 
+        placeholder="Confirm Password" 
+        required
+      >
+      <i class="fa" 
+        [ngClass]="isConfirmPasswordVisible ? 'fa-eye' : 'fa-eye-slash'" 
+        (click)="toggleConfirmPasswordVisibility()">
+      </i>
+    </div>
+
+    <div *ngIf="!isPasswordMatch()" class="error-message">
+      Passwords do not match!
+    </div>
+
+    <button type="submit" [disabled]="!isPasswordMatch()">Register</button>
+  </form>
+</section>

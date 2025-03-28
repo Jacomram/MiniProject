@@ -17,22 +17,37 @@ export class RegisterComponent {
   name: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
+  isPasswordVisible: boolean = false;
+  isConfirmPasswordVisible: boolean = false;
 
-  constructor(private router: Router) {} 
+  constructor(private router: Router) {}
+
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
+  }
+
+  isPasswordMatch(): boolean {
+    return this.password === this.confirmPassword;
+  }
 
   async register() {
+    if (!this.isPasswordMatch()) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     const auth = getAuth(firebaseApp);
     try {
-      // User registration with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
       console.log("User registered:", userCredential.user);
 
-      // Saving user information with Firebase
       await this.saveUserProfile(userCredential.user.uid, this.name, this.email);
-
       alert("Registration successful!");
-
-      // Registration successful, navigate to home page
       this.router.navigate(['/home']);
     } catch (error) {
       console.error("Error registering user:", error);
@@ -40,11 +55,9 @@ export class RegisterComponent {
     }
   }
 
-  // Save user profile in Firestore
   async saveUserProfile(uid: string, name: string, email: string): Promise<void> {
     const db = getFirestore(firebaseApp);
     try {
-      // Add data to Firestore's users collection 
       await addDoc(collection(db, 'users'), {
         uid: uid,
         name: name,
