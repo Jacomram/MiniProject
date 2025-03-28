@@ -12,12 +12,15 @@
         <h2>Basic Information</h2>
         <div class="info-row">
           <span class="label">User Name:</span>
-          <span class="value">{{ username || 'Not set' }}</span>
+          <span *ngIf="!editingUsername" class="value">{{ username || 'Not set' }}</span>
+          <input *ngIf="editingUsername" [(ngModel)]="newUsername" class="edit-input">
+          <button (click)="toggleUsernameEdit()">{{ editingUsername ? 'Save' : 'Edit' }}</button>
         </div>
         <div class="info-row">
           <span class="label">E-mail address:</span>
           <span class="value">{{ user.email }}</span>
         </div>
+        <br><button mat-menu-item *ngIf="isLoggedIn" (click)="logout()" class="logout-button">Logout</button>
       </div>
 
       <!-- Password renewal area -->
@@ -30,24 +33,30 @@
         <form *ngIf="showPasswordForm" (ngSubmit)="handlePasswordUpdate()">
           <div class="form-group">
             <label for="newPassword">New password</label>
-            <input 
-              type="password" 
-              id="newPassword" 
-              [(ngModel)]="newPassword" 
-              name="newPassword"
-              required
-              minlength="6"
-            >
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showNewPassword ? 'text' : 'password'" 
+                id="newPassword" 
+                [(ngModel)]="newPassword" 
+                name="newPassword"
+                required
+                minlength="6"
+              >
+              <i class="fa" [ngClass]="showNewPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="toggleNewPasswordVisibility()"></i>
+            </div>
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm password</label>
-            <input 
-              type="password" 
-              id="confirmPassword" 
-              [(ngModel)]="confirmPassword" 
-              name="confirmPassword"
-              required
-            >
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showConfirmPassword ? 'text' : 'password'" 
+                id="confirmPassword" 
+                [(ngModel)]="confirmPassword" 
+                name="confirmPassword"
+                required
+              >
+              <i class="fa" [ngClass]="showConfirmPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="toggleConfirmPasswordVisibility()"></i>
+            </div>
           </div>
           <div class="button-group">
             <button type="submit" [disabled]="!passwordFormValid()">RENEW</button>
