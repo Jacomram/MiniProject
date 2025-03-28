@@ -2,18 +2,17 @@
     display: flex;
     height: 100%;
 }
-  
+
 .profile-content {
     flex: 1;
     padding: 2rem;
-    /* margin-left: 250px; */
     width: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-  
+
 .profile-card {
     background: white;
     border-radius: 8px;
@@ -21,51 +20,167 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     max-width: 600px;
 }
-  
+
 .info-row {
     display: flex;
+    align-items: center;
     margin: 1rem 0;
 }
-  
+
 .label {
     font-weight: bold;
     width: 120px;
 }
-  
+
 .value {
     flex: 1;
 }
-  
+
+.edit-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
 .password-section {
     margin-top: 2rem;
     padding-top: 2rem;
     border-top: 1px solid #eee;
 }
-  
+
 .form-group {
     margin-bottom: 1rem;
 }
-  
+
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
 }
-  
+
 .form-group input {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
-  
+
 .button-group {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
 }
-  
+
 .button-group button {
     padding: 0.5rem 1rem;
     cursor: pointer;
 }
+
+button {
+    background-color: #FF4081;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #f50057;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+    background-color: #B3B3B3;
+    cursor: not-allowed;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #2FB5D8;
+    color: #2FB5D8;
+}
+
+input:hover {
+    border: 1px solid #2FB5D8;
+}
+
+#newPassword:focus, #confirmPassword:focus {
+    outline: none;
+    border: 1px solid #2FB5D8;
+    color: #2FB5D8;
+}
+
+#newPassword:hover, #confirmPassword:hover {
+    border: 1px solid #2FB5D8;
+}
+
+/* Custom styles for password visibility toggle */
+.password-input {
+    position: relative;
+}
+
+.password-input .fa {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #2FB5D8;
+}
+
+input.edit-input:focus,
+input#newPassword:focus,
+input#confirmPassword:focus {
+    border-color: #2FB5D8;
+    color: #2FB5D8;
+}
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .password-input-wrapper input {
+    width: 95%;
+  }
+  
+  .password-input-wrapper i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .logout-button {
+    background-color: #FF4081;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-left: auto; /* ヘッダー内で右に配置 */
+  }
+  
+  .logout-button:hover {
+    background-color: #f50057;
+    transform: scale(1.05);
+  }
+  
+  .logout-button:active {
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
