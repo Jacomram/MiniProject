@@ -7,6 +7,7 @@ import { RouterModule, Router } from '@angular/router';
 import { getAuth, onAuthStateChanged, signOut, updatePassword, updateProfile, User } from "firebase/auth";
 import { firebaseApp } from '../../../main';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { updateDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-profile',
@@ -101,23 +102,33 @@ export class ProfileComponent {
     this.confirmPassword = '';
   }
 
-  toggleUsernameEdit(): void {
+  async toggleUsernameEdit(): Promise<void> {
     if (this.editingUsername && this.user && this.newUsername !== this.username) {
-      // Check that user is not null and then call updateProfile
-      if (this.user) {
-        updateProfile(this.user, { displayName: this.newUsername })
-          .then(() => {
-            this.username = this.newUsername;
-            alert("Username updated successfully!");
-          })
-          .catch(error => {
-            console.error("Error updating username:", error);
-            alert("Failed to update username. Please try again.");
-          });
+      try {
+        // 1. Update Auth display name
+        await updateProfile(this.user, { displayName: this.newUsername });
+        
+        // 2. Update the relevant Firestore user document (added parts)
+        const db = getFirestore(firebaseApp);
+        const usersCollection = collection(db, 'users');
+        const querySnapshot = await getDocs(usersCollection);
+        
+        querySnapshot.forEach(async (doc) => {
+          if (doc.data()["email"]?.toLowerCase() === this.user?.email?.toLowerCase()) {
+            await updateDoc(doc.ref, { name: this.newUsername });
+          }
+        });
+        
+        this.username = this.newUsername;
+        alert("Username updated successfully!");
+      } catch (error) {
+        console.error("Error updating username:", error);
+        alert("Failed to update username. Please try again.");
       }
     }
     this.editingUsername = !this.editingUsername;
   }
+  
 
   toggleNewPasswordVisibility(): void {
     this.showNewPassword = !this.showNewPassword;
