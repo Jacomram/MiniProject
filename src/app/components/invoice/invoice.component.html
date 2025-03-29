@@ -1,1 +1,55 @@
-<p>invoice works!</p>
+<app-header (sideNavToggle)="toggleSidenav()"></app-header>
+
+<mat-sidenav-container>
+  <mat-sidenav-content>
+    <div class="content-container">
+      <h1>Invoices</h1>
+
+      <h2>Available Invoices</h2>
+      <ul>
+        <li *ngFor="let invoice of invoices$ | async">
+          <button (click)="selectInvoice(invoice)">
+            {{ invoice.invoiceNumber }} - {{ invoice.invoiceDate | date }}
+          </button>
+        </li>
+      </ul>
+
+      <div *ngIf="selectedInvoice">
+        <h2>Invoice Details</h2>
+        <p><strong>Invoice Number:</strong> {{ selectedInvoice.invoiceNumber }}</p>
+        <p><strong>Date:</strong> {{ selectedInvoice.invoiceDate | date }}</p>
+        <p><strong>Due Date:</strong> {{ selectedInvoice.dueDate | date }}</p>
+
+        <h3>Order Details</h3>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Milk</th>
+              <th>Syrup</th>
+              <th>Caffeine</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectedInvoice.orderDetails; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.type }} Drink</td>
+              <td>{{ item.milk }}</td>
+              <td>{{ item.syrup }}</td>
+              <td>{{ item.caffeine }}</td>
+              <td>${{ item.price.toFixed(2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Price Summary</h3>
+        <p><strong>Subtotal:</strong> ${{ selectedInvoice.subtotal.toFixed(2) }}</p>
+        <p><strong>Discount:</strong> ${{ selectedInvoice.discount.toFixed(2) }}</p>
+        <p><strong>Tax (0.68%):</strong> ${{ selectedInvoice.tax.toFixed(2) }}</p>
+        <p><strong>Total:</strong> ${{ selectedInvoice.total.toFixed(2) }}</p>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

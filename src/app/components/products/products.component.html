@@ -1,1 +1,141 @@
-<p>products works!</p>
+<app-header (sideNavToggle)="toggleSidenav()"></app-header>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
+    <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content-container">
+      <div class="title-container">
+        <h1>Build your Favorite Drink</h1>
+      </div>
+
+      <div class="container">
+        <div class="sections-wrapper">
+          <!-- Sección HOT -->
+          <div class="section">
+            <button 
+              class="hot-cold-button" 
+              (click)="toggleSection('HOT')"
+            >
+              ☕ HOT
+            </button>
+
+            <div class="content" *ngIf="isSectionVisible('HOT')">
+              <div class="drink-controls">
+                <div class="counter">
+                  <label><i class="fas fa-mug-hot"></i> Milk:</label>
+                  <div class="counter-controls">
+                    <button (click)="decrementMilk()">−</button>
+                    <span>{{ milkCount }}</span>
+                    <button (click)="incrementMilk()">+</button>
+                  </div>
+                </div>
+                <div class="counter">
+                  <label><i class="fas fa-tint"></i> Syrup:</label>
+                  <div class="counter-controls">
+                    <button (click)="decrementSyrup()">−</button>
+                    <span>{{ syrupCount }}</span>
+                    <button (click)="incrementSyrup()">+</button>
+                  </div>
+                </div>
+                <div class="caffeine">
+                  <label>Caffeine:</label>
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="caffeineHot">
+                    <span class="slider"></span>
+                  </label>
+                  <span class="caffeine-status">{{ caffeineHot ? 'YES' : 'NO' }}</span>
+                </div>
+                <button class="add-drink-button" (click)="addDrink('HOT')">Add Drink</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección COLD -->
+          <div class="section">
+            <button 
+              class="hot-cold-button" 
+              (click)="toggleSection('COLD')"
+            >
+              🧊 COLD
+            </button>
+
+            <div class="content" *ngIf="isSectionVisible('COLD')">
+              <div class="drink-controls">
+                <div class="counter">
+                  <label><i class="fas fa-mug-hot"></i> Milk:</label>
+                  <div class="counter-controls">
+                    <button (click)="decrementColdMilk()">−</button>
+                    <span>{{ coldMilkCount }}</span>
+                    <button (click)="incrementColdMilk()">+</button>
+                  </div>
+                </div>
+                <div class="counter">
+                  <label><i class="fas fa-tint"></i> Syrup:</label>
+                  <div class="counter-controls">
+                    <button (click)="decrementColdSyrup()">−</button>
+                    <span>{{ coldSyrupCount }}</span>
+                    <button (click)="incrementColdSyrup()">+</button>
+                  </div>
+                </div>
+                <div class="caffeine">
+                  <label>Caffeine:</label>
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="caffeineCold">
+                    <span class="slider"></span>
+                  </label>
+                  <span class="caffeine-status">{{ caffeineCold ? 'YES' : 'NO' }}</span>
+                </div>
+                <button class="add-drink-button" (click)="addDrink('COLD')">Add Drink</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen de la orden -->
+        <div class="totals">
+          <h2>Order Summary</h2>
+          <div *ngFor="let drink of drinks; let i = index">
+            <p>
+              {{ drink.type }} Drink - Milk: {{ drink.milk }}, Syrup: {{ drink.syrup }}, Caffeine: {{ drink.caffeine }}
+              <button class="remove-drink-button" (click)="removeDrink(i)">Remove</button>
+            </p>
+          </div>
+          <p>Total Drinks: {{ drinks.length }}</p>
+          <button class="reset-button" (click)="resetOrder()">Reset Order</button>
+        </div>
+
+        <!-- Precios y taxes -->
+        <div class="price-summary">
+          <h2>Price Summary</h2>
+          <p>Subtotal: ${{ subtotal.toFixed(2) }}</p>
+          <p>Discount: ${{ discount.toFixed(2) }}</p>
+          <p>Tax (0.68%): ${{ tax.toFixed(2) }}</p>
+          <p>Total: ${{ total.toFixed(2) }}</p>
+        </div>
+
+        <!-- Código de descuento -->
+        <div class="discount-code">
+          <input type="text" [(ngModel)]="discountCode" placeholder="Enter discount code">
+          <button (click)="applyDiscount()">Apply Discount</button>
+        </div>
+
+        <!-- Confirmar orden -->
+        <button class="confirm-order-button" (click)="confirmOrder()">Confirm Order</button>
+
+        <!-- Historial de órdenes -->
+        <div class="order-history">
+          <h2>Order History</h2>
+          <ul>
+            <li *ngFor="let order of orderHistory">
+              <p>
+                Invoice: {{ order.invoiceNumber }} - Total: ${{ order.total.toFixed(2) }}
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

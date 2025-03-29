@@ -1,0 +1,250 @@
+/* Estilos comunes */
+.content-container {
+  padding: 16px;
+}
+
+mat-sidenav-container {
+  height: 100vh;
+}
+
+mat-sidenav {
+  width: 250px; /* Ajusta el ancho del menú lateral */
+}
+
+mat-sidenav-content {
+  transition: margin 0.3s ease; /* Suaviza el ajuste del contenido */
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sections-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.section {
+  text-align: center;
+}
+
+/* Estilo para los botones de HOT y COLD */
+.hot-cold-button {
+  margin-bottom: 20px; /* Agrega espacio debajo de los botones */
+  padding: 10px 20px;
+  background-color: #d6464692;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.hot-cold-button:hover {
+  background-color: #da3b6b;
+}
+
+/* Estilo para los controles de bebida */
+.drink-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Espacio entre los elementos dentro de los controles */
+}
+
+.counter-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.counter-controls button {
+  padding: 5px 10px;
+  background-color: #d6464692;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.counter-controls button:hover {
+  background-color: #da3b6b;
+}
+
+.caffeine {
+  margin-top: 10px;
+}
+
+.quantity {
+  margin-top: 10px;
+}
+
+.quantity label {
+  font-weight: bold;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+.totals {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.totals h2 {
+  margin-bottom: 10px;
+}
+
+.discount-code {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.discount-code input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.discount-code button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.discount-code button:hover {
+  background-color: #0056b3;
+}
+
+.add-drink-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-drink-button:hover {
+  background-color: #218838;
+}
+
+.price-summary {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.price-summary h2 {
+  margin-bottom: 10px;
+}
+
+.remove-drink-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-drink-button:hover {
+  background-color: #c82333;
+}
+
+.reset-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #e0a800;
+}
+
+.confirm-order-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.confirm-order-button:hover {
+  background-color: #218838;
+}
+
+.order-history {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
