@@ -137,19 +137,4 @@ export class ProfileComponent {
   toggleConfirmPasswordVisibility(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
-
-  async logout() {
-    try {
-      if (this.isLoggedIn) {
-        const auth = getAuth(firebaseApp);
-        await signOut(auth);
-        localStorage.removeItem("loginTime"); // Clear login time
-        this.isLoggedIn = false;
-        console.log("User logged out");
-      }
-      this.router.navigate(['/login']);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  }
 }
