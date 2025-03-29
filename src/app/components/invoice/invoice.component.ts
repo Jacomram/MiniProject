@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { from, Observable } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../header/header.component'; // Asegúrate de que la ruta sea correcta
+import { SideNavListComponent } from '../side-nav/side-nav.component';
+import { firebaseApp } from '../../../main';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
 @Component({
   selector: 'app-invoice',
@@ -14,22 +16,28 @@ import { HeaderComponent } from '../header/header.component'; // Asegúrate de q
     MatSidenavModule,
     MatButtonModule,
     HeaderComponent,
+    SideNavListComponent,
     DatePipe
   ],
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css']
 })
-export class InvoiceComponent implements OnInit {
+export class InvoiceComponent {
+  sidenavOpened = false;
   invoices$: Observable<any[]>; // Observable para las facturas desde Firebase
   selectedInvoice: any; // Factura seleccionada para mostrar detalles
 
-  constructor(private firestore: Firestore) {
-    // Cargar las facturas desde Firebase
-    const invoicesCollection = collection(this.firestore, 'products');
-    this.invoices$ = collectionData(invoicesCollection, { idField: 'id' });
+  constructor() {
+    this.invoices$ = from(this.queryData()) as Observable<any[]>; 
   }
 
-  ngOnInit(): void {}
+  async queryData() {
+    // Cargar las facturas desde Firebase
+    const db = getFirestore(firebaseApp);
+    const usersCollection = collection(db, 'products');
+    const querySnapshot = await getDocs(usersCollection);   
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
 
   // Método para seleccionar una factura
   selectInvoice(invoice: any) {
@@ -38,6 +46,6 @@ export class InvoiceComponent implements OnInit {
 
   // Método para manejar el evento de toggle del sidenav
   toggleSidenav() {
-    console.log('Sidenav toggled');
+    this.sidenavOpened = !this.sidenavOpened;
   }
 }

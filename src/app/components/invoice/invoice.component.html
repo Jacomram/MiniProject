@@ -1,6 +1,10 @@
 <app-header (sideNavToggle)="toggleSidenav()"></app-header>
 
 <mat-sidenav-container>
+  <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
+      <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+  </mat-sidenav>
+  
   <mat-sidenav-content>
     <div class="content-container">
       <h1>Invoices</h1>
