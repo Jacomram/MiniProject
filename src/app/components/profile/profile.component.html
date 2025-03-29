@@ -1,7 +1,9 @@
-<app-header (sideNavToggle)="toggleSideNav()"></app-header>
+<app-header (sideNavToggle)="toggleSidenav()"></app-header>
 
-<div class="profile-container">
-  <app-side-nav *ngIf="isSideNavOpen"></app-side-nav>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
+      <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+  </mat-sidenav>
 
   <main class="profile-content">
     <h1>Profile</h1>
@@ -65,4 +67,4 @@
       </div>
     </div>
   </main>
-</div>
+</mat-sidenav-container>

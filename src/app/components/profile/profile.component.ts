@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component'; 
 import { SideNavListComponent } from '../side-nav/side-nav.component'; 
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, Router } from '@angular/router';
 import { getAuth, onAuthStateChanged, signOut, updatePassword, updateProfile, User } from "firebase/auth";
 import { firebaseApp } from '../../../main';
@@ -11,7 +12,7 @@ import { updateDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, FormsModule, HeaderComponent, SideNavListComponent, RouterModule],
+  imports: [CommonModule, FormsModule, HeaderComponent, SideNavListComponent, MatSidenavModule, RouterModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -24,7 +25,7 @@ export class ProfileComponent {
   confirmPassword: string = '';
   editingUsername: boolean = false;
   newUsername: string = '';
-  isSideNavOpen: boolean = false;
+  sidenavOpened: boolean = false;
   isLoggedIn: boolean = false;
 
   // Flag for showing/hiding password
@@ -62,8 +63,8 @@ export class ProfileComponent {
     });
   }
 
-  toggleSideNav() {
-    this.isSideNavOpen = !this.isSideNavOpen;
+  toggleSidenav() {
+    this.sidenavOpened = !this.sidenavOpened;
   }
 
   passwordFormValid(): boolean {
