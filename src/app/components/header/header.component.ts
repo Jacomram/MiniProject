@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Router, RouterLink } from '@angular/router';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import { firebaseApp } from '../../../main';
 
@@ -21,16 +21,17 @@ export class HeaderComponent implements OnInit {
     @Output() public sideNavToggle = new EventEmitter();
     username: string = "";
 
-    constructor() {}
+    constructor(private router: Router) {} 
+
     ngOnInit(): void {
         const auth = getAuth(firebaseApp);
 
-        // Check if a user is logged in
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const db = getFirestore(firebaseApp);
-                const usersCollection = collection(db, 'users');  // Reference to 'users' collection
+                const usersCollection = collection(db, 'users');
                 const querySnapshot = await getDocs(usersCollection);
+                
                 querySnapshot.forEach((doc) => {
                     if(doc.data()["email"].toLocaleLowerCase() == user.email?.toLocaleLowerCase()) {
                         this.username = `Hi! ${doc.data()["name"]}`;
@@ -44,7 +45,17 @@ export class HeaderComponent implements OnInit {
     }
 
     onToggleSidenav() {
-        // Open and close side nav bar
         this.sideNavToggle.emit();
+    }
+
+    async logout() {
+        try {
+            const auth = getAuth(firebaseApp);
+            await signOut(auth);
+            this.username = "";
+            this.router.navigate(['/login']);
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
     }
 }
