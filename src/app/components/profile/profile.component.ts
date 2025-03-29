@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component'; 
 import { SideNavListComponent } from '../side-nav/side-nav.component'; 
-import { RouterModule, Router } from '@angular/router'; // Routerを追加
+import { RouterModule, Router } from '@angular/router';
 import { getAuth, onAuthStateChanged, signOut, updatePassword, updateProfile, User } from "firebase/auth";
 import { firebaseApp } from '../../../main';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
 @Component({
   selector: 'app-profile',
@@ -23,25 +24,38 @@ export class ProfileComponent {
   editingUsername: boolean = false;
   newUsername: string = '';
   isSideNavOpen: boolean = false;
-  isLoggedIn: boolean = false; // isLoggedInプロパティを追加
+  isLoggedIn: boolean = false;
 
-  // パスワード表示/非表示用のフラグ
+  // Flag for showing/hiding password
   showNewPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
   constructor(private ngZone: NgZone, private router: Router) { 
     const auth = getAuth(firebaseApp);
-    onAuthStateChanged(auth, async (currentUser) => {
-      this.ngZone.run(() => { 
+    onAuthStateChanged(auth, async (currentUser) => { 
+      this.ngZone.run(async () => { 
         if (currentUser) {
           this.user = currentUser;
-          this.username = currentUser.displayName || currentUser.email?.split('@')[0] || 'Not set';
+          
+          const db = getFirestore(firebaseApp);
+          const usersCollection = collection(db, 'users');
+          const querySnapshot = await getDocs(usersCollection); 
+          
+          let username = "";
+          querySnapshot.forEach((doc) => {
+            if (doc.data()["email"].toLowerCase() === currentUser.email?.toLowerCase()) {
+              username = doc.data()["name"];
+            }
+          });
+          
+          // If a username is obtained, use it. If not, use the default value
+          this.username = username || currentUser.displayName || currentUser.email?.split('@')[0] || 'Not set';
           this.newUsername = this.username;
-          this.isLoggedIn = true; // ログイン時にisLoggedInをtrueに設定
+          this.isLoggedIn = true;
         } else {
           this.user = null;
           this.username = 'Not set';
-          this.isLoggedIn = false; // ログアウト時にisLoggedInをfalseに設定
+          this.isLoggedIn = false;
         }
       });
     });
@@ -67,7 +81,7 @@ export class ProfileComponent {
     }
 
     try {
-      // userがnullでないことを確認してからupdatePasswordを呼び出し
+      // Check that user is not null and then call updatePassword
       if (this.user) {
         await updatePassword(this.user, this.newPassword);
         alert("Password updated successfully!");
@@ -89,7 +103,7 @@ export class ProfileComponent {
 
   toggleUsernameEdit(): void {
     if (this.editingUsername && this.user && this.newUsername !== this.username) {
-      // userがnullでないことを確認してからupdateProfileを呼び出し
+      // Check that user is not null and then call updateProfile
       if (this.user) {
         updateProfile(this.user, { displayName: this.newUsername })
           .then(() => {
