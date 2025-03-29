@@ -8,5 +8,8 @@
   </div>
   <div class="right-section">
     <span>{{username}}</span>
+    <button *ngIf="username" class="logout-button" (click)="logout()">
+      <i class="fa fa-sign-out"></i> Log out
+    </button>
   </div>
 </nav>
