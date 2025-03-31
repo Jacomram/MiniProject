@@ -3,6 +3,30 @@
   padding: 16px;
 }
 
+/* Invoice container */
+.invoice-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Section headers */
+.invoice-details h2,
+.order-details h3,
+.price-summary h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Invoice details */
+.invoice-details p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
 mat-sidenav-container {
   height: 100vh;
 }
@@ -15,10 +39,29 @@ mat-sidenav-content {
   transition: margin 0.3s ease; /* Suaviza el ajuste del contenido */
 }
 
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  font-weight: bold;
+}
+
+.filter-container input,
+.filter-container select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Order details table */
 .invoice-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .invoice-table th,
@@ -26,10 +69,12 @@ mat-sidenav-content {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
+  font-size: 14px;
 }
 
 .invoice-table th {
-  background-color: #f2f2f2;
+  background-color: #007bff;
+  color: white;
   font-weight: bold;
 }
 
@@ -39,6 +84,13 @@ mat-sidenav-content {
 
 .invoice-table tr:hover {
   background-color: #ddd;
+}
+
+/* Price summary */
+.price-summary p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
 }
 
 button {
@@ -53,4 +105,20 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* Print button */
+.print-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.print-button:hover {
+  background-color: #218838;
 }
