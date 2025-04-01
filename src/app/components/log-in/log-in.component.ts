@@ -33,6 +33,7 @@ export class LogInComponent {
     try {
       const auth = getAuth(firebaseApp);
       const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
+      console.log(userCredential);
       console.log("User logged in:", userCredential.user);
       
       // Saving login log with Firebase
@@ -40,9 +41,32 @@ export class LogInComponent {
 
       // Login successful, navigate to home page
       this.router.navigate(['/home']);
-    } catch (error) {
-      console.error("Error login:", error);
-      alert("Login failed. Please try again");
+    } catch (error: any) {
+      console.error("Login failed:", error.message);
+      
+      // Handle specific Firebase Authentication error codes
+      switch (error.code) {
+        case "auth/user-not-found":
+          alert("No user found with this email. Please sign up.");
+          break;
+        case "auth/wrong-password":
+          alert("Incorrect password. Please try again.");
+          break;
+        case "auth/invalid-email":
+          alert("Invalid email format.");
+          break;
+        case "auth/user-disabled":
+          alert("This account has been disabled.");
+          break;
+        case "auth/invalid-credential":
+          alert("Incorrect email or password. Please try again.");
+          break;
+        case "auth/missing-password":
+          alert("Please enter the password.");
+          break;
+        default:
+          alert("Login failed: " + error.message);
+      }
     }
   }
 
