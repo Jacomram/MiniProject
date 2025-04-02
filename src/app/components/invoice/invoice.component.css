@@ -1,4 +1,4 @@
-/* Estilos comunes */
+
 .content-container {
   padding: 16px;
 }
@@ -32,11 +32,11 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-  width: 250px; /* Ajusta el ancho del menú lateral */
+  width: 250px;
 }
 
 mat-sidenav-content {
-  transition: margin 0.3s ease; /* Suaviza el ajuste del contenido */
+  transition: margin 0.3s ease;
 }
 
 .filter-container {

@@ -12,7 +12,7 @@
 
       <div class="container">
         <div class="sections-wrapper">
-          <!-- Sección HOT -->
+          <!-- Secció HOT -->
           <div class="section">
             <button 
               class="hot-cold-button" 
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <!-- Sección COLD -->
+          <!-- COLD -->
           <div class="section">
             <button 
               class="hot-cold-button" 
@@ -93,7 +93,7 @@
           </div>
         </div>
 
-        <!-- Resumen de la orden -->
+        <!-- Order -->
         <div class="totals">
           <h2>Order Summary</h2>
           <div *ngFor="let drink of drinks; let i = index">
@@ -106,7 +106,7 @@
           <button class="reset-button" (click)="resetOrder()">Reset Order</button>
         </div>
 
-        <!-- Precios y taxes -->
+        <!-- Prices and taxes -->
         <div class="price-summary">
           <h2>Price Summary</h2>
           <p>Subtotal: ${{ subtotal.toFixed(2) }}</p>
@@ -115,16 +115,16 @@
           <p>Total: ${{ total.toFixed(2) }}</p>
         </div>
 
-        <!-- Código de descuento -->
+        <!-- Promo code -->
         <div class="discount-code">
           <input type="text" [(ngModel)]="discountCode" placeholder="Enter discount code">
           <button (click)="applyDiscount()">Apply Discount</button>
         </div>
 
-        <!-- Confirmar orden -->
+        <!-- Confirm order -->
         <button class="confirm-order-button" (click)="confirmOrder()">Confirm Order</button>
 
-        <!-- Historial de órdenes -->
+        <!-- Historial -->
         <div class="order-history">
           <h2>Order History</h2>
           <ul>

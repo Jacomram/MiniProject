@@ -3,11 +3,11 @@ import { from, Observable } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
-import { HeaderComponent } from '../header/header.component'; // Asegúrate de que la ruta sea correcta
+import { HeaderComponent } from '../header/header.component'; 
 import { SideNavListComponent } from '../side-nav/side-nav.component';
 import { Firestore, collection, getDocs, getFirestore } from '@angular/fire/firestore';
 import { PDFDocument, rgb } from 'pdf-lib';
-import { getAuth } from '@angular/fire/auth'; // Importa Firebase Authentication
+import { getAuth } from '@angular/fire/auth'; // Firebase Authentication
 
 @Component({
   selector: 'app-invoice',
@@ -25,32 +25,28 @@ import { getAuth } from '@angular/fire/auth'; // Importa Firebase Authentication
 })
 export class InvoiceComponent {
   sidenavOpened = false;
-  invoices$: Observable<any[]>; // Observable para las facturas desde Firebase
-  selectedInvoice: any; // Factura seleccionada para mostrar detalles
+  invoices$: Observable<any[]>; // Observable Firebase
+  selectedInvoice: any; 
 
   constructor() {
     this.invoices$ = from(this.queryData()) as Observable<any[]>; 
   }
 
   async queryData() {
-    // Cargar las facturas desde Firebase
     const db = getFirestore();
     const usersCollection = collection(db, 'products');
     const querySnapshot = await getDocs(usersCollection);   
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
 
-  // Método para seleccionar una factura
   selectInvoice(invoice: any) {
     this.selectedInvoice = invoice;
   }
 
-  // Método para manejar el evento de toggle del sidenav
   toggleSidenav() {
     this.sidenavOpened = !this.sidenavOpened;
   }
 
-  // Método para imprimir la factura como PDF
   async printInvoiceAsPDF() {
     try {
       if (!this.selectedInvoice) {
@@ -60,7 +56,6 @@ export class InvoiceComponent {
 
       const { invoiceNumber, invoiceDate, dueDate, orderDetails, subtotal, discount, tax, total } = this.selectedInvoice;
 
-      // Validar datos de la factura
       if (!invoiceNumber || !invoiceDate || !dueDate || !orderDetails || subtotal == null || discount == null || tax == null || total == null) {
         alert('Invoice data is incomplete. Please check the selected invoice.');
         return;
@@ -69,19 +64,17 @@ export class InvoiceComponent {
       const pdfDoc = await PDFDocument.create();
       let page = pdfDoc.addPage([600, 800]);
 
-      // Variables para controlar la posición en la página
       let yPosition = 750;
       const margin = 40;
       const lineHeight = 20;
       const cellHeight = 20;
       const columnWidths = [30, 150, 80, 80, 80, 80];
 
-      // Obtener datos del usuario autenticado
       const auth = getAuth();
       const user = auth.currentUser;
-      const userName = user?.email || 'Unknown User';
+      const userName = user?.displayName || 'Unknown User'; 
+      const userEmail = user?.email || 'Unknown Email'; 
 
-      // Datos de About Us
       const aboutUsText = `We are Team One, composed of Hebe ChihYun Hsu, Hotaka Iwata, Donovan Mendez, Jacobo Ramirez, and Maria Castro. Together, we have the mission of creating a functional website with the help of Angular and Firebase.
 
 If you enjoyed this website feel free to contact us.`;
@@ -93,11 +86,11 @@ If you enjoyed this website feel free to contact us.`;
         'mvcastrotrujillo@gmail.com',
       ];
 
-      // Dibujar Basic Information
+      // Basic Information
       page.drawText(`User Name: ${userName}`, { x: margin, y: yPosition, size: 12 });
-      yPosition -= lineHeight * 2;
+      page.drawText(`E-mail: ${userEmail}`, { x: margin, y: yPosition - lineHeight, size: 12 });
+      yPosition -= lineHeight * 3;
 
-      // Dibujar encabezado
       page.drawText('Invoice', { x: margin, y: yPosition, size: 24, color: rgb(0, 0, 0) });
       yPosition -= lineHeight * 2;
       page.drawText(`Invoice Number: ${invoiceNumber}`, { x: margin, y: yPosition, size: 12 });
@@ -105,7 +98,6 @@ If you enjoyed this website feel free to contact us.`;
       page.drawText(`Due Date: ${new Date(dueDate).toLocaleDateString()}`, { x: margin, y: yPosition - lineHeight * 2, size: 12 });
       yPosition -= lineHeight * 4;
 
-      // Dibujar encabezados de la tabla
       const drawTableHeader = () => {
         let xPosition = margin;
         const headers = ['#', 'Item', 'Milk', 'Syrup', 'Caffeine', 'Price'];
@@ -124,7 +116,6 @@ If you enjoyed this website feel free to contact us.`;
         yPosition -= cellHeight;
       };
 
-      // Dibujar filas de la tabla
       const drawTableRow = (row: any, index: number) => {
         let xPosition = margin;
         const rowData = [
@@ -150,10 +141,8 @@ If you enjoyed this website feel free to contact us.`;
         yPosition -= cellHeight;
       };
 
-      // Dibujar encabezados de la tabla
       drawTableHeader();
 
-      // Dibujar filas de la tabla
       orderDetails.forEach((item: any, index: number) => {
         if (yPosition < margin + cellHeight * 4) {
           page = pdfDoc.addPage([600, 800]);
@@ -163,7 +152,6 @@ If you enjoyed this website feel free to contact us.`;
         drawTableRow(item, index);
       });
 
-      // Dibujar resumen de precios
       if (yPosition < margin + cellHeight * 5) {
         page = pdfDoc.addPage([600, 800]);
         yPosition = 750;
@@ -182,7 +170,7 @@ If you enjoyed this website feel free to contact us.`;
         yPosition -= lineHeight;
       });
 
-      // Dibujar About Us
+      // About Us
       if (yPosition < margin + lineHeight * 6) {
         page = pdfDoc.addPage([600, 800]);
         yPosition = 750;
@@ -194,7 +182,7 @@ If you enjoyed this website feel free to contact us.`;
         yPosition -= lineHeight;
       });
 
-      // Descargar el PDF
+      // PDF
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       const link = document.createElement('a');

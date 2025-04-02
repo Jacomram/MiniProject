@@ -8,7 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   standalone: true,
   imports: [HeaderComponent, SideNavListComponent, MatSidenavModule],
   templateUrl: './about-us.component.html',
-  styleUrls: ['./about-us.component.css'] // Corregido: styleUrls en plural
+  styleUrls: ['./about-us.component.css'] 
 })
 export class AboutUsComponent {
     sidenavOpened = false;
