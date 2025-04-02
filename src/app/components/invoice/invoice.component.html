@@ -2,9 +2,9 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side">
-      <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
+    <app-side-nav (sidenavClose)="sidenav.close()"></app-side-nav>
   </mat-sidenav>
-  
+
   <mat-sidenav-content>
     <div class="content-container">
       <h1>Invoices</h1>
@@ -18,41 +18,53 @@
         </li>
       </ul>
 
-      <div *ngIf="selectedInvoice">
-        <h2>Invoice Details</h2>
-        <p><strong>Invoice Number:</strong> {{ selectedInvoice.invoiceNumber }}</p>
-        <p><strong>Date:</strong> {{ selectedInvoice.invoiceDate | date }}</p>
-        <p><strong>Due Date:</strong> {{ selectedInvoice.dueDate | date }}</p>
+      <div *ngIf="selectedInvoice" class="invoice-container">
+        <!-- Invoice Details -->
+        <div class="invoice-details">
+          <h2>Invoice Details</h2>
+          <p><strong>Invoice Number:</strong> {{ selectedInvoice.invoiceNumber }}</p>
+          <p><strong>Date:</strong> {{ selectedInvoice.invoiceDate | date }}</p>
+          <p><strong>Due Date:</strong> {{ selectedInvoice.dueDate | date }}</p>
+        </div>
 
-        <h3>Order Details</h3>
-        <table class="invoice-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Item</th>
-              <th>Milk</th>
-              <th>Syrup</th>
-              <th>Caffeine</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of selectedInvoice.orderDetails; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ item.type }} Drink</td>
-              <td>{{ item.milk }}</td>
-              <td>{{ item.syrup }}</td>
-              <td>{{ item.caffeine }}</td>
-              <td>${{ item.price.toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Order Details -->
+        <div class="order-details">
+          <h3>Order Details</h3>
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Milk</th>
+                <th>Syrup</th>
+                <th>Caffeine</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedInvoice.orderDetails; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.type }} Drink</td>
+                <td>{{ item.milk }}</td>
+                <td>{{ item.syrup }}</td>
+                <td>{{ item.caffeine }}</td>
+                <td>${{ item.price.toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h3>Price Summary</h3>
-        <p><strong>Subtotal:</strong> ${{ selectedInvoice.subtotal.toFixed(2) }}</p>
-        <p><strong>Discount:</strong> ${{ selectedInvoice.discount.toFixed(2) }}</p>
-        <p><strong>Tax (0.68%):</strong> ${{ selectedInvoice.tax.toFixed(2) }}</p>
-        <p><strong>Total:</strong> ${{ selectedInvoice.total.toFixed(2) }}</p>
+        <!-- Price Summary -->
+        <div class="price-summary">
+          <h3>Price Summary</h3>
+          <p><strong>Subtotal:</strong> ${{ selectedInvoice.subtotal.toFixed(2) }}</p>
+          <p><strong>Discount:</strong> ${{ selectedInvoice.discount.toFixed(2) }}</p>
+          <p><strong>Tax (0.68%):</strong> ${{ selectedInvoice.tax.toFixed(2) }}</p>
+          <p><strong>Total:</strong> ${{ selectedInvoice.total.toFixed(2) }}</p>
+        </div>
+
+        <!-- Print Button -->
+        <button (click)="printInvoiceAsPDF()" class="print-button">Print Invoice as PDF</button>
       </div>
     </div>
   </mat-sidenav-content>
