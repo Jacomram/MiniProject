@@ -35,7 +35,6 @@ import { firebaseApp } from '../../../main';
 export class ProductsComponent {
   sidenavOpened = true;
 
-  // Variables para el contenido dinámico
   milkCount = 0;
   syrupCount = 0;
   coldMilkCount = 0;
@@ -43,23 +42,23 @@ export class ProductsComponent {
   caffeineHot = false;
   caffeineCold = false;
 
-  // Control de visibilidad de secciones
+  // Control
   visibleSections: { [key: string]: boolean } = { HOT: false, COLD: false };
 
-  // Lista de bebidas
+  // List
   drinks: { type: string; milk: number; syrup: number; caffeine: string }[] = [];
 
-  // Variables para el resumen de precios
+  // Variables
   subtotal = 0;
   discount = 0;
-  taxRate = 0.68; // Porcentaje de impuestos
+  taxRate = 0.68;
   tax = 0;
   total = 0;
   discountCode = '';
-  discountApplied = false; // Para verificar si el código ya fue aplicado
-  alertMessage = ''; // Mensaje de alerta
+  discountApplied = false;
+  alertMessage = '';
 
-  // Historial de órdenes
+  // Historial
   orderHistory: { invoiceNumber: string; total: number }[] = [];
 
   constructor(private router: Router) {}
@@ -68,7 +67,6 @@ export class ProductsComponent {
     this.sidenavOpened = !this.sidenavOpened;
   }
 
-  // Métodos para manejar la visibilidad de las secciones
   toggleSection(type: string) {
     this.visibleSections[type] = !this.visibleSections[type];
   }
@@ -77,7 +75,7 @@ export class ProductsComponent {
     return this.visibleSections[type];
   }
 
-  // Métodos para manejar los contadores de Milk y Syrup
+  // Milk y Syrup
   incrementMilk() {
     this.milkCount++;
   }
@@ -110,8 +108,7 @@ export class ProductsComponent {
     if (this.coldSyrupCount > 0) this.coldSyrupCount--;
   }
 
-  // Método para agregar una bebida al resumen
-  addDrink(type: string) {
+    addDrink(type: string) {
     const drink = {
       type,
       milk: type === 'HOT' ? this.milkCount : this.coldMilkCount,
@@ -122,7 +119,6 @@ export class ProductsComponent {
     this.drinks.push(drink);
     this.calculateSubtotal();
 
-    // Reinicia los contadores
     if (type === 'HOT') {
       this.milkCount = 0;
       this.syrupCount = 0;
@@ -134,13 +130,12 @@ export class ProductsComponent {
     }
   }
 
-  // Método para calcular el subtotal
+
   calculateSubtotal() {
-    this.subtotal = this.drinks.length * 3; // Cada bebida cuesta $3
+    this.subtotal = this.drinks.length * 3;
     this.calculateTotals();
   }
 
-  // Método para aplicar un descuento basado en un código
   applyDiscount() {
     if (this.discountApplied) {
       window.alert('The discount code WELCOME2025 has already been applied.');
@@ -148,29 +143,25 @@ export class ProductsComponent {
     }
 
     if (this.discountCode === 'WELCOME2025') {
-      this.discountApplied = true; // Marca el descuento como aplicado
-      this.calculateTotals(); // Recalcula los totales con el descuento
+      this.discountApplied = true;
+      this.calculateTotals();
       window.alert('The discount code WELCOME2025 has been successfully applied.');
     } else {
       window.alert('Invalid discount code. Please try again.');
     }
   }
 
-  // Método para calcular los totales
   calculateTotals() {
-    // Aplica el descuento solo si el código fue aplicado
     this.discount = this.discountApplied ? this.subtotal * 0.15 : 0;
     this.tax = this.subtotal * (this.taxRate / 100);
     this.total = this.subtotal - this.discount + this.tax;
   }
 
-  // Método para eliminar una bebida del resumen
   removeDrink(index: number) {
     this.drinks.splice(index, 1);
     this.calculateSubtotal();
   }
 
-  // Método para resetear la orden
   resetOrder() {
     this.drinks = [];
     this.discountApplied = false;
@@ -178,7 +169,6 @@ export class ProductsComponent {
     this.calculateSubtotal();
   }
 
-  // Método para confirmar la orden
   async confirmOrder() {
     if (this.total <= 0) {
       window.alert('Cannot generate an invoice with a total of $0. Please add items to your order.');
@@ -188,14 +178,14 @@ export class ProductsComponent {
     const invoiceNumber = `INV-${new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15)}`;
     const invoiceDate = new Date();
     const dueDate = new Date();
-    dueDate.setDate(invoiceDate.getDate() + 7); // Fecha de vencimiento en 7 días
+    dueDate.setDate(invoiceDate.getDate() + 7);
 
     const orderDetails = this.drinks.map(drink => ({
       type: drink.type,
       milk: drink.milk,
       syrup: drink.syrup,
       caffeine: drink.caffeine,
-      price: 3 // Precio fijo por bebida
+      price: 3
     }));
 
     const invoiceData = {
@@ -209,17 +199,14 @@ export class ProductsComponent {
       total: this.total
     };
 
-    // Guardar la factura en Firebase
+    // Invoice Firebase
     const db = getFirestore(firebaseApp);
     await addDoc(collection(db, 'products'), invoiceData);
 
-    // Agregar la factura al historial local
     this.orderHistory.push(invoiceData);
 
-    // Mostrar mensaje de confirmación
     window.alert(`Order confirmed! Invoice Number: ${invoiceNumber}`);
 
-    // Reiniciar la orden actual
     this.resetOrder();
   }
 

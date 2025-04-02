@@ -58,7 +58,7 @@ h2 {
   cursor: pointer;
   color: #aaa;
   transition: color 0.3s;
-  font-size: 1.2rem; /* アイコンのサイズを少し大きく */
+  font-size: 1.2rem;
 }
 
 .input-group i:hover {

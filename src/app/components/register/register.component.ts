@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
     return this.password === this.confirmPassword;
   }
 
-  // Register関数
+  // Register
   async register() {
     if (!this.isPasswordMatch()) {
       alert("Passwords do not match!");

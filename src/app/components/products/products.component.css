@@ -1,4 +1,3 @@
-/* Estilos comunes */
 .content-container {
   padding: 16px;
 }
@@ -8,11 +7,11 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-  width: 250px; /* Ajusta el ancho del menú lateral */
+  width: 250px;
 }
 
 mat-sidenav-content {
-  transition: margin 0.3s ease; /* Suaviza el ajuste del contenido */
+  transition: margin 0.3s ease;
 }
 
 .title-container {
@@ -35,9 +34,8 @@ mat-sidenav-content {
   text-align: center;
 }
 
-/* Estilo para los botones de HOT y COLD */
 .hot-cold-button {
-  margin-bottom: 20px; /* Agrega espacio debajo de los botones */
+  margin-bottom: 20px;
   padding: 10px 20px;
   background-color: #d6464692;
   color: white;
@@ -50,12 +48,11 @@ mat-sidenav-content {
   background-color: #da3b6b;
 }
 
-/* Estilo para los controles de bebida */
 .drink-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px; /* Espacio entre los elementos dentro de los controles */
+  gap: 15px;
 }
 
 .counter-controls {
