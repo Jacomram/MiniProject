@@ -7,6 +7,7 @@ import { HeaderComponent } from '../header/header.component'; // Asegúrate de q
 import { SideNavListComponent } from '../side-nav/side-nav.component';
 import { Firestore, collection, getDocs, getFirestore } from '@angular/fire/firestore';
 import { PDFDocument, rgb } from 'pdf-lib';
+import { getAuth } from '@angular/fire/auth'; // Importa Firebase Authentication
 
 @Component({
   selector: 'app-invoice',
@@ -57,20 +58,28 @@ export class InvoiceComponent {
         return;
       }
 
+      const { invoiceNumber, invoiceDate, dueDate, orderDetails, subtotal, discount, tax, total } = this.selectedInvoice;
+
+      // Validar datos de la factura
+      if (!invoiceNumber || !invoiceDate || !dueDate || !orderDetails || subtotal == null || discount == null || tax == null || total == null) {
+        alert('Invoice data is incomplete. Please check the selected invoice.');
+        return;
+      }
+
       const pdfDoc = await PDFDocument.create();
       let page = pdfDoc.addPage([600, 800]);
-      const { invoiceNumber, invoiceDate, dueDate, orderDetails, subtotal, discount, tax, total } = this.selectedInvoice;
 
       // Variables para controlar la posición en la página
       let yPosition = 750;
-      const margin = 40; // Ajustar margen para que la tabla no se salga
+      const margin = 40;
       const lineHeight = 20;
       const cellHeight = 20;
-      const columnWidths = [30, 150, 80, 80, 80, 80]; // Ancho de cada columna
+      const columnWidths = [30, 150, 80, 80, 80, 80];
 
-      // Datos de Basic Information (User Name y E-mail address)
-      const userName = 'John Doe'; // Reemplaza con el valor real del usuario
-      const userEmail = 'johndoe@example.com'; // Reemplaza con el valor real del usuario
+      // Obtener datos del usuario autenticado
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const userName = user?.email || 'Unknown User';
 
       // Datos de About Us
       const aboutUsText = `We are Team One, composed of Hebe ChihYun Hsu, Hotaka Iwata, Donovan Mendez, Jacobo Ramirez, and Maria Castro. Together, we have the mission of creating a functional website with the help of Angular and Firebase.
@@ -84,24 +93,9 @@ If you enjoyed this website feel free to contact us.`;
         'mvcastrotrujillo@gmail.com',
       ];
 
-      // Cargar la imagen desde la URL o archivo
-      const imageUrl = 'assets\imgteamone.jpeg"'; // Reemplaza con la URL real de la imagen
-      let image;
-      try {
-        const imageBytes = await fetch(imageUrl).then((res) => res.arrayBuffer());
-        image = await pdfDoc.embedPng(imageBytes);
-      } catch (error) {
-        console.error('Error loading image:', error);
-        alert('Failed to load the image. Please check the image URL.');
-        return;
-      }
-      const imageWidth = 100;
-      const imageHeight = 100;
-
       // Dibujar Basic Information
       page.drawText(`User Name: ${userName}`, { x: margin, y: yPosition, size: 12 });
-      page.drawText(`E-mail Address: ${userEmail}`, { x: margin, y: yPosition - lineHeight, size: 12 });
-      yPosition -= lineHeight * 3;
+      yPosition -= lineHeight * 2;
 
       // Dibujar encabezado
       page.drawText('Invoice', { x: margin, y: yPosition, size: 24, color: rgb(0, 0, 0) });
@@ -189,23 +183,15 @@ If you enjoyed this website feel free to contact us.`;
       });
 
       // Dibujar About Us
-      if (yPosition < margin + imageHeight + lineHeight * 6) {
+      if (yPosition < margin + lineHeight * 6) {
         page = pdfDoc.addPage([600, 800]);
         yPosition = 750;
       }
-      page.drawText(aboutUsText, { x: margin, y: yPosition, size: 10 });
+      page.drawText(aboutUsText, { x: margin, y: yPosition, size: 10, maxWidth: 520, lineHeight: 12 });
       yPosition -= lineHeight * 4;
       contactInfo.forEach((email) => {
         page.drawText(email, { x: margin, y: yPosition, size: 10 });
         yPosition -= lineHeight;
-      });
-
-      // Dibujar imagen
-      page.drawImage(image, {
-        x: 450,
-        y: yPosition - imageHeight + 50,
-        width: imageWidth,
-        height: imageHeight,
       });
 
       // Descargar el PDF
