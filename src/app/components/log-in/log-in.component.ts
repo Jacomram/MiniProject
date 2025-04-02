@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 import { firebaseApp } from '../../../main';
 
 @Component({
@@ -33,7 +33,6 @@ export class LogInComponent {
     try {
       const auth = getAuth(firebaseApp);
       const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-      console.log(userCredential);
       console.log("User logged in:", userCredential.user);
       
       // Saving login log with Firebase
@@ -74,6 +73,19 @@ export class LogInComponent {
     const db = getFirestore(firebaseApp);
     try {
       const curentTime: string = Date.now().toString();
+      const usersCollection = collection(db, 'users');
+      const querySnapshot = await getDocs(usersCollection);
+      
+      let username = "";
+      querySnapshot.forEach((doc) => {
+          if(doc.data()["email"].toLocaleLowerCase() == email?.toLocaleLowerCase()) {
+              username = doc.data()["name"];
+          }
+      });
+
+      if(username == "")
+          username = email?.split('@')[0]; 
+
       // Add data to Firestore's login_log collection 
       await addDoc(collection(db, 'login_log'), {
         uid: uid,
@@ -82,10 +94,12 @@ export class LogInComponent {
         createdAt: new Date()
       });
 
-      //keep login time
+      //keep login information
       localStorage.setItem("loginTime", curentTime);
+      localStorage.setItem("uid", uid);
+      localStorage.setItem("userInfo", username + "|" + email);
 
-      console.log("login log saved successfully!");
+      console.log("login log saved successfully!", localStorage);
     } catch (error) {
       console.error("Error saving login log:", error);
       throw error;
